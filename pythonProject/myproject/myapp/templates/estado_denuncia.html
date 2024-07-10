@@ -1,0 +1,14 @@
+<!-- myapp/templates/estado_denuncia.html -->
+{% extends 'base.html' %}
+
+{% block title %}Estado de mi Denuncia{% endblock %}
+
+{% block content %}
+<h2>Estado de mi Denuncia</h2>
+<form method="post" action="{% url 'buscar_denuncia' %}">
+    {% csrf_token %}
+    <label for="codigo_identificacion">Introduzca el identificador único de su denuncia:</label>
+    <input type="text" id="codigo_identificacion" name="codigo_identificacion" required>
+    <button type="submit">Enviar</button>
+</form>
+{% endblock %}

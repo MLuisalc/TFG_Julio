@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Lista de Denuncias{% endblock %}
+
+{% block content %}
+<h2>Bandeja de entrada</h2>    <!-- Lista de Denuncias -->
+<ul>
+    {% for denuncia in denuncias %}
+    <li>
+        <a href="{% url 'detalle_denuncia' denuncia.pk %}">Denuncia nùm. {{ denuncia.id }}</a> - {{ denuncia.tipificacion_denuncia }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

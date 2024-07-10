@@ -1,0 +1,153 @@
+<!-- myapp/templates/report.html -->
+{% extends 'base.html' %}
+
+{% block title %}Canal de Denuncias{% endblock %}
+
+{% block content %}
+<h2>Canal de Denuncias</h2>
+
+<form id="denunciaForm" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Descripción de la denuncia -->
+    <div class="tab">
+        <h3>Descripción de la denuncia</h3>
+        <div>
+            <label for="{{ form.hecho_denunciado.id_for_label }}">Hecho denunciado*</label>
+            {{ form.hecho_denunciado }}
+        </div>
+        <div>
+            <label for="{{ form.tipificacion_denuncia.id_for_label }}">Tipificación denuncia*</label>
+            {{ form.tipificacion_denuncia }}
+        </div>
+        <div>
+            <label for="{{ form.archivo.id_for_label }}">Archivo</label>
+            {{ form.archivo }}
+        </div>
+        <button type="button" onclick="nextPrev(1)">Siguiente</button>
+    </div>
+
+    <!-- Identificación del denunciante -->
+    <div class="tab" style="display:none;">
+        <h3>Identificación del denunciante</h3>
+        <div>
+            <label for="{{ form.nombre.id_for_label }}">Nombre</label>
+            {{ form.nombre }}
+        </div>
+        <div>
+            <label for="{{ form.apellidos.id_for_label }}">Apellidos</label>
+            {{ form.apellidos }}
+        </div>
+        <div>
+            <label for="{{ form.telefono.id_for_label }}">Teléfono</label>
+            {{ form.telefono }}
+        </div>
+        <div>
+            <label for="{{ form.correo.id_for_label }}">Correo</label>
+            {{ form.correo }}
+        </div>
+        <div>
+            <label for="{{ form.dni.id_for_label }}">DNI</label>
+            {{ form.dni }}
+        </div>
+        <div>
+            <label for="{{ form.vinculo.id_for_label }}">Vínculo con esta administración*</label>
+            {{ form.vinculo }}
+        </div>
+        <button type="button" onclick="nextPrev(-1)">Atrás</button>
+        <button type="button" onclick="nextPrev(1)">Siguiente</button>
+    </div>
+
+    <!-- Presentación de la denuncia -->
+    <div class="tab" style="display:none;">
+        <h3>Presentación de la denuncia</h3>
+        <p><strong>Hecho denunciado:</strong> <span id="confirm_hecho_denunciado"></span></p>
+        <p><strong>Tipificación denuncia:</strong> <span id="confirm_tipificacion_denuncia"></span></p>
+        <p><strong>Archivo:</strong> <span id="confirm_archivo"></span></p>
+        <p><strong>Nombre:</strong> <span id="confirm_nombre"></span></p>
+        <p><strong>Apellidos:</strong> <span id="confirm_apellidos"></span></p>
+        <p><strong>Teléfono:</strong> <span id="confirm_telefono"></span></p>
+        <p><strong>Correo:</strong> <span id="confirm_correo"></span></p>
+        <p><strong>DNI:</strong> <span id="confirm_dni"></span></p>
+        <p><strong>Vínculo con esta administración:</strong> <span id="confirm_vinculo"></span></p>
+        <div>
+            <label for="{{ form.captcha.id_for_label }}">Captcha</label>
+            {{ form.captcha }}
+        </div>
+        <button type="button" onclick="nextPrev(-1)">Atrás</button>
+        <button type="submit">Presentar denuncia</button>
+    </div>
+
+    {% if form.errors %}
+        <ul class="errorlist">
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li class="error">{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var currentTab = 0;
+    showTab(currentTab);
+
+    function showTab(n) {
+        var tabs = document.getElementsByClassName("tab");
+        tabs[n].style.display = "block";
+        if (n == 0) {
+            document.querySelector(".tab button[onclick='nextPrev(-1)']").style.display = "none";
+        } else {
+            document.querySelector(".tab button[onclick='nextPrev(-1)']").style.display = "inline";
+        }
+        if (n == (tabs.length - 1)) {
+            document.querySelector(".tab button[onclick='nextPrev(1)']").style.display = "none";
+        } else {
+            document.querySelector(".tab button[onclick='nextPrev(1)']").style.display = "inline";
+        }
+    }
+
+    window.nextPrev = function(n) {
+        var tabs = document.getElementsByClassName("tab");
+        if (n == 1 && !validateForm()) return false;
+        tabs[currentTab].style.display = "none";
+        currentTab = currentTab + n;
+        if (currentTab >= tabs.length) {
+            document.getElementById("denunciaForm").submit();
+            return false;
+        }
+        showTab(currentTab);
+        updateConfirmations();
+    }
+
+    function validateForm() {
+        var valid = true;
+        var tab = document.getElementsByClassName("tab")[currentTab];
+        var inputs = tab.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].hasAttribute("required") && inputs[i].value == "") {
+                inputs[i].className += " invalid";
+                valid = false;
+            }
+        }
+        return valid;
+    }
+
+    function updateConfirmations() {
+        if (currentTab == 2) {
+            document.getElementById("confirm_hecho_denunciado").textContent = document.getElementById("id_hecho_denunciado").value;
+            document.getElementById("confirm_tipificacion_denuncia").textContent = document.getElementById("id_tipificacion_denuncia").options[document.getElementById("id_tipificacion_denuncia").selectedIndex].text;
+            document.getElementById("confirm_archivo").textContent = document.getElementById("id_archivo").value;
+            document.getElementById("confirm_nombre").textContent = document.getElementById("id_nombre").value;
+            document.getElementById("confirm_apellidos").textContent = document.getElementById("id_apellidos").value;
+            document.getElementById("confirm_telefono").textContent = document.getElementById("id_telefono").value;
+            document.getElementById("confirm_correo").textContent = document.getElementById("id_correo").value;
+            document.getElementById("confirm_dni").textContent = document.getElementById("id_dni").value;
+            document.getElementById("confirm_vinculo").textContent = document.getElementById("id_vinculo").options[document.getElementById("id_vinculo").selectedIndex].text;
+        }
+    }
+});
+</script>
+{% endblock %}

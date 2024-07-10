@@ -1,0 +1,29 @@
+<!-- myapp/templates/detalle_denuncia.html -->
+{% extends 'base.html' %}
+
+{% block title %}Detalle de la Denuncia{% endblock %}
+
+{% block content %}
+<h2>Detalle de la Denuncia {{ denuncia.codigo_identificacion }}</h2>
+<p><strong>Hecho denunciado:</strong> {{ denuncia.hecho_denunciado }}</p>
+<p><strong>Tipificación denuncia:</strong> {{ denuncia.get_tipificacion_denuncia_display }}</p>
+<p><strong>Archivo:</strong></p>
+{% if archivos %}
+    <ul>
+    {% for archivo in archivos %}
+        <li><a href="{{ archivo.archivo.url }}" download>{{ archivo.archivo.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay archivos adjuntos.</p>
+{% endif %}
+<p><strong>Nombre:</strong> {{ denuncia.nombre }}</p>
+<p><strong>Apellidos:</strong> {{ denuncia.apellidos }}</p>
+<p><strong>Teléfono:</strong> {{ denuncia.telefono }}</p>
+<p><strong>Correo:</strong> {{ denuncia.correo }}</p>
+<p><strong>DNI:</strong> {{ denuncia.dni }}</p>
+<p><strong>Vínculo con esta administración:</strong> {{ denuncia.vinculo }}</p>
+<p><strong>Fecha y hora de registro:</strong> {{ denuncia.fecha_hora }}</p>
+<p><strong>Estado:</strong> {{ denuncia.get_estado_display }}</p>
+<a href="{% url 'estado_denuncia' %}" class="button">Volver</a>
+{% endblock %}

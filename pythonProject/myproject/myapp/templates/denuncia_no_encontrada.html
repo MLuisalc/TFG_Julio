@@ -1,0 +1,10 @@
+<!-- myapp/templates/denuncia_no_encontrada.html -->
+{% extends 'base.html' %}
+
+{% block title %}Denuncia No Encontrada{% endblock %}
+
+{% block content %}
+<h2>Denuncia No Encontrada</h2>
+<p>EL CÓDIGO INTRODUCIDO NO SE CORRESPONDE CON NINGUNA DENUNCIA REGISTRADA.</p>
+<a href="{% url 'estado_denuncia' %}" class="button">Volver</a>
+{% endblock %}

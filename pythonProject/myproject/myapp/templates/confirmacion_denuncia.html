@@ -1,0 +1,12 @@
+<!-- myapp/templates/confirmacion_denuncia.html -->
+{% extends 'base.html' %}
+
+{% block title %}Confirmación de Denuncia{% endblock %}
+
+{% block content %}
+<h2>Confirmación de Denuncia</h2>
+<p><strong>Su denuncia ha sido registrada con éxito.</strong></p>
+<p><strong>Código de identificación único:</strong> {{ denuncia.codigo_identificacion }}</p>
+<p><strong>ATENCIÓN: ESTE CÓDIGO ÚNICO LE PERMITE IDENTIFICAR SU DENUNCIA. COPIE EL CÓDIGO ÚNICO ANTES DE SALIR DE ESTA VENTANA.</strong></p>
+<a href="{% url 'index' %}" class="button">Volver al Inicio</a>
+{% endblock %}

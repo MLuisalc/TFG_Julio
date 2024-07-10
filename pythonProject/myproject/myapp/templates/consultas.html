@@ -1,0 +1,23 @@
+<!-- myapp/templates/consultas.html -->
+{% extends 'base.html' %}
+
+{% block title %}Consultas{% endblock %}
+
+{% block content %}
+<h2>Consultas</h2>
+<form method="get">
+    {{ form.as_p }}
+    <button type="submit">Buscar</button>
+</form>
+
+{% if denuncias %}
+    <h3>Resultados de la búsqueda</h3>
+    <ul>
+    {% for denuncia in denuncias %}
+        <li><a href="{% url 'detalle_denuncia' denuncia.pk %}">{{ denuncia.codigo_identificacion }} - {{ denuncia.fecha_hora }} - {{ denuncia.get_tipificacion_denuncia_display }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No se encontraron resultados.</p>
+{% endif %}
+{% endblock %}

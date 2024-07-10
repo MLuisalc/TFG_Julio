@@ -1,0 +1,49 @@
+<!-- myapp/templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Portal Web{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">LOGO</div>
+        <div class="search">
+            <input type="text" placeholder="Buscar...">
+            {% if user.is_authenticated %}
+                <a href="{% url 'user_logout' %}" class="button">Salir</a>
+            {% else %}
+                <a href="{% url 'user_login' %}" class="button">Login</a>
+                <a href="{% url 'register' %}" class="button">Registrar</a>
+            {% endif %}
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'lista_denuncias' %}">Lista de denuncias</a></li>
+                <li><a href="{% url 'consultas' %}">Consultas</a></li>
+                <li><a href="{% url 'expedientes' %}">Expedientes</a></li>
+                <li><a href="{% url 'informes' %}">Informes</a></li>
+            {% else %}
+                <li><a href="{% url 'canal_denuncias' %}">Canal de denuncias</a></li>
+                <li><a href="{% url 'preguntas_frecuentes' %}">Preguntas frecuentes</a></li>
+                <li><a href="{% url 'normativa' %}">Normativa</a></li>
+                <li><a href="{% url 'estado_denuncia' %}">Estado de mi denuncia</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>Texto fijo de pie de página</p>
+        <a href="{% url 'aviso_legal' %}">Aviso legal</a>
+    </footer>
+</body>
+</html>
